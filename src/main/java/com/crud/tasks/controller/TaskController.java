@@ -35,9 +35,7 @@ public class TaskController {
     public TaskDto findTask(
             @PathVariable("id") long id) {
         return taskMapper.mapToTaskDto(service.findTask(id));
-
     }
-
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
     public void deleteTask(Long taskId) {

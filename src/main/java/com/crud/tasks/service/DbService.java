@@ -1,22 +1,31 @@
 package com.crud.tasks.service;
 
+import com.crud.tasks.TaskNotFoundException;
 import com.crud.tasks.domain.Task;
 import com.crud.tasks.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalLong;
 
 @Service
 public class DbService {
     @Autowired
     private TaskRepository repository;
 
+    Optional<Task> optionalTask = Optional.empty();
+
+
     public List<Task> getAllTasks() {
         return repository.findAll();
     }
 
-    public Task findTask(final Long id) {
-        return repository.findById(id).orElse(null);
+    public Task findTask(final long id) throws TaskNotFoundException {
+        return repository.findById(id).orElseThrow(() -> new TaskNotFoundException(id + " was not found"));
     }
+
+    //ew wyjatek - stworzyc wyjatek ktory stwarza (customowy)
+
 }

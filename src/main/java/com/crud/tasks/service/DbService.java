@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalLong;
 
 @Service
 public class DbService {
@@ -22,7 +20,5 @@ public class DbService {
     public Task findTask(final long id) throws TaskNotFoundException {
         return repository.findById(id).orElseThrow(() -> new TaskNotFoundException(id + " was not found"));
     }
-
-    //ew wyjatek - stworzyc wyjatek ktory stwarza (customowy)
 
 }

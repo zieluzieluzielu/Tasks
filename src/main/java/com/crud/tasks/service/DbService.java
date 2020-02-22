@@ -15,9 +15,6 @@ public class DbService {
     @Autowired
     private TaskRepository repository;
 
-    Optional<Task> optionalTask = Optional.empty();
-
-
     public List<Task> getAllTasks() {
         return repository.findAll();
     }

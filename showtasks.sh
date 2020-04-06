@@ -16,8 +16,7 @@ fail() {
   echo "File runcrud.sh was not found"
 }
 
-if test -f "$RUNCRUD"; then
-  start_runcrud
+if start_runcrud; then
   open_page
 else
   fail

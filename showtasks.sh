@@ -13,7 +13,7 @@ open_page() {
 }
 
 fail() {
-  echo "File runcrud.sh was not found"
+  echo "There were errors in runcrud.sh"
 }
 
 if start_runcrud; then

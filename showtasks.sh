@@ -16,10 +16,6 @@ fail() {
   echo "File runcrud.sh was not found"
 }
 
-fail2() {
-  echo "SAFARI browser not found"
-}
-
 if test -f "$RUNCRUD"; then
   start_runcrud
   open_page

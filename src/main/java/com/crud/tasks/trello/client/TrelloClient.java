@@ -16,7 +16,7 @@ import java.util.List;
 public class TrelloClient {
 
     @Value("${trello.api.endpoint.prod}")
-    private String trelloApiEndpoint;
+    public String trelloApiEndpoint;
 
     @Value("${trello.app.key}")
     private String trelloAppKey;
@@ -24,25 +24,26 @@ public class TrelloClient {
     @Value("${trello.app.token}")
     private String trelloToken;
 
-    URI url = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/maciekzielinski4/boards")
-            .queryParam("key", trelloAppKey)
-            .queryParam("token", trelloToken)
-            .queryParam("fields", "name,id").build().encode().toUri();
-
     @Autowired
     private RestTemplate restTemplate;
 
-    TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
+    private URI prepareUrl() {
+        return UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/maciekzielinski4/boards")
+                .queryParam("key", trelloAppKey)
+                .queryParam("token", trelloToken)
+                .queryParam("fields", "name,id").build().encode().toUri();
+
+    }
 
     public List<TrelloBoardDto> getTrelloBoards() {
-    if (boardsResponse != null) {
-        return Arrays.asList(boardsResponse);
+
+        TrelloBoardDto[] boardsResponse = restTemplate.getForObject(prepareUrl(), TrelloBoardDto[].class);
+
+        if (boardsResponse != null) {
+            return Arrays.asList(boardsResponse);
+        }
+        return new ArrayList<>();
     }
-    return new ArrayList<>();
-    }
-
-
-
 
 
 }

@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 @Component
 public class TrelloClient {

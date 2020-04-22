@@ -20,4 +20,10 @@ public class TrelloConfig {
     @Value("${trello.app.username}")
     private String trelloUsername;
 
+    @Value("${spring.mail.username}")
+    private String testMail;
+
+    @Value("${spring.mail.password}")
+    private String testpwd;
+
 }

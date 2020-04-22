@@ -1,6 +1,7 @@
 package com.crud.tasks.service;
 
 import com.crud.tasks.domain.Mail;
+import com.crud.tasks.trello.config.TrelloConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class SimpleEmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
+
+    @Autowired
+    private TrelloConfig trelloConfig;
 
     public void send(final Mail mail) {
         LOGGER.info("Starting email preparation..");

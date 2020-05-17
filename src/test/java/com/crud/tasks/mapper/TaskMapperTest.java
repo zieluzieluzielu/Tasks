@@ -28,6 +28,8 @@ public class TaskMapperTest {
 
         //Then
         assertEquals("title", task.getTitle());
+        assertEquals(Long.valueOf(1L), task.getId());
+        assertEquals("content", task.getContent());
     }
 
     @Test
@@ -59,6 +61,8 @@ public class TaskMapperTest {
         //Then
         assertEquals(2,taskDtoList.size());
         assertEquals("content",taskDtoList.get(0).getContent());
+        assertEquals("title2",taskDtoList.get(1).getTitle());
+        assertEquals(Long.valueOf(2L),taskDtoList.get(1).getId());
     }
 
 

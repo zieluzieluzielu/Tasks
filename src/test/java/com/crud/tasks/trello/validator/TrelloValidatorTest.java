@@ -1,19 +1,13 @@
 package com.crud.tasks.trello.validator;
 
 import com.crud.tasks.domain.TrelloBoard;
-import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloList;
-import com.crud.tasks.domain.TrelloListDto;
-import com.crud.tasks.domain.cards.TrelloCard;
-import com.crud.tasks.mapper.TrelloMapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 class TrelloValidatorTest {
 

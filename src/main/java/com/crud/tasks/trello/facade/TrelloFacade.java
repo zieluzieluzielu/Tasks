@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.*;
-
 @Component
 public class TrelloFacade {
     @Autowired

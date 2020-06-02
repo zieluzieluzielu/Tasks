@@ -26,41 +26,52 @@ public class SimpleEmailService {
     @Autowired
     private MailCreatorService mailCreatorService;
 
-    public void send(final Mail mail) {
-        LOGGER.info("Starting email preparation..");
+    public void send(final Mail mail, EmailType emailType) {
         try {
-            //SimpleMailMessage mailMessage = createMailMessage(mail);
-            //javaMailSender.send(mailMessage);
-            javaMailSender.send(createMimeMessage(mail));
-            LOGGER.info("Email has been sent");
+        LOGGER.info("Starting email preparation..");
+            javaMailSender.send(createMimeMessage(mail, emailType));
+            if (emailType == EmailType.TRELLO_CARD_MAIL) {
+                LOGGER.info("Email about newly created Trello Card was sent successfully.");
+            } else if (emailType == EmailType.SCHEDULED_MAIL) {
+                LOGGER.info("Scheduled email reporting the current number of tasks was sent successfully.");
+            }
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
         }
     }
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail){
+    private MimeMessagePreparator createMimeMessage(final Mail mail, EmailType emailType) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()),true);
+
+            if (emailType == EmailType.TRELLO_CARD_MAIL) {
+                messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            } else if (emailType == EmailType.SCHEDULED_MAIL) {
+                messageHelper.setText(mailCreatorService.tasksQuantityEmail(mail.getMessage()), true);
+            }
+
+            if (mail.getToCc() != null && !mail.getToCc().equals("")) {
+                messageHelper.setCc(mail.getToCc());
+            }
+
 
         };
     }
 
 
-
-    private SimpleMailMessage createMailMessage(final Mail mail) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getMailTo());
-        mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mail.getMessage());
-        if (mail.getToCc() != null && !mail.getToCc().equals("")) {
-            mailMessage.setCc(mail.getToCc());
-            LOGGER.info("CC added");
-        } else {
-            LOGGER.info("CC not added");
-        }
-        return mailMessage;
-    }
+//    private SimpleMailMessage createMailMessage(final Mail mail) {
+//        SimpleMailMessage mailMessage = new SimpleMailMessage();
+//        mailMessage.setTo(mail.getMailTo());
+//        mailMessage.setSubject(mail.getSubject());
+//        mailMessage.setText(mail.getMessage());
+//        if (mail.getToCc() != null && !mail.getToCc().equals("")) {
+//            mailMessage.setCc(mail.getToCc());
+//            LOGGER.info("CC added");
+//        } else {
+//            LOGGER.info("CC not added");
+//        }
+//        return mailMessage;
+//    }
 }

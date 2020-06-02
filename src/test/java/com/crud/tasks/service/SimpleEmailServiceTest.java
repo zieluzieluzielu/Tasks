@@ -6,11 +6,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import static org.mockito.Mockito.times;
+import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.verify;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleEmailServiceTest {
@@ -24,35 +27,28 @@ public class SimpleEmailServiceTest {
     @Test
     public void shouldSendEmail() {
         //Given
-        Mail mail = new Mail("mac.ziel@gmail.com",  "Test", "Test message","test@cc.com");
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getMailTo());
-        mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mail.getMessage());
-        mailMessage.setCc(mail.getToCc());
+        Mail mail = new Mail("mac.ziel@gmail.com", "Test", "Test message", "test@cc.com");
+        MimeMessagePreparator mimeMessagePreparator = simpleEmailService.createMimeMessage(mail, EmailType.TRELLO_CARD_MAIL);
+        //when
 
-        //When
-        simpleEmailService.send(mail);
+        //when
+        simpleEmailService.send(mail, EmailType.TRELLO_CARD_MAIL);
 
-        //Then
-        verify(javaMailSender, times(1)).send(mailMessage);
+        //then
+        verify(javaMailSender, times(1)).send(any(MimeMessagePreparator.class));
 
     }
 
     @Test
     public void shouldSendEmailWithoutCc() {
-        //Given
-        Mail mail = new Mail("mac.ziel@gmail.com", "Test", "Test message");
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getMailTo());
-        mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mail.getMessage());
+        //given
+        Mail mail = new Mail("test@test.com", "test2@test.com", "test", "to jest test");
+        MimeMessagePreparator mimeMessagePreparator = simpleEmailService.createMimeMessage(mail, EmailType.TRELLO_CARD_MAIL);
+        //when
+        simpleEmailService.send(mail, EmailType.TRELLO_CARD_MAIL);
 
-        //When
-        simpleEmailService.send(mail);
-
-        //Then
-        verify(javaMailSender, times(1)).send(mailMessage);
-
+        //then
+        verify(javaMailSender, times(1)).send(refEq(mimeMessagePreparator));
     }
+
 }

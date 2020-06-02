@@ -52,7 +52,7 @@ public class TaskControllerTest {
         //when(taskMapper.mapToTaskDtoList(service.getAllTasks())).thenReturn(tasksDto);
 
         //When & Then
-        mockMvc.perform(get("/v1/task/getTasks").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/tasks").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(taskDto1.getId().intValue())))
@@ -66,14 +66,13 @@ public class TaskControllerTest {
         //Given
         TaskDto taskDto1 = new TaskDto(1L, "title1", "content1");
         Task task1 = new Task(1L, "title1", "content1");
-        String taskId = "1";
-
         Optional<Task> task21 = Optional.of(task1);
+
         when(service.getTask(ArgumentMatchers.any())).thenReturn(task21);
         when(taskMapper.mapToTaskDto(ArgumentMatchers.any())).thenReturn(taskDto1);
 
         //When & Then
-        mockMvc.perform(get("/v1/task/getTask").contentType(MediaType.APPLICATION_JSON).param("taskId", taskId))
+        mockMvc.perform(get("/v1/tasks/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(taskDto1.getId().intValue())))
                 .andExpect(jsonPath("$.title", is("title1")))
@@ -95,7 +94,7 @@ public class TaskControllerTest {
         when(taskMapper.mapToTaskDto(ArgumentMatchers.any())).thenReturn(taskDto);
 
         //When & Then
-        mockMvc.perform(put("/v1/task/updateTask")
+        mockMvc.perform(put("/v1/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))

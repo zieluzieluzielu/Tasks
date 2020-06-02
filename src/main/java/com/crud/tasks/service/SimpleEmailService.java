@@ -28,7 +28,7 @@ public class SimpleEmailService {
 
     public void send(final Mail mail, EmailType emailType) {
         try {
-        LOGGER.info("Starting email preparation..");
+            LOGGER.info("Starting email preparation..");
             javaMailSender.send(createMimeMessage(mail, emailType));
             if (emailType == EmailType.TRELLO_CARD_MAIL) {
                 LOGGER.info("Email about newly created Trello Card was sent successfully.");
@@ -40,7 +40,7 @@ public class SimpleEmailService {
         }
     }
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail, EmailType emailType) {
+    public MimeMessagePreparator createMimeMessage(final Mail mail, EmailType emailType) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
@@ -59,19 +59,4 @@ public class SimpleEmailService {
 
         };
     }
-
-
-//    private SimpleMailMessage createMailMessage(final Mail mail) {
-//        SimpleMailMessage mailMessage = new SimpleMailMessage();
-//        mailMessage.setTo(mail.getMailTo());
-//        mailMessage.setSubject(mail.getSubject());
-//        mailMessage.setText(mail.getMessage());
-//        if (mail.getToCc() != null && !mail.getToCc().equals("")) {
-//            mailMessage.setCc(mail.getToCc());
-//            LOGGER.info("CC added");
-//        } else {
-//            LOGGER.info("CC not added");
-//        }
-//        return mailMessage;
-//    }
 }
